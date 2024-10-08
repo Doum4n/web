@@ -1,0 +1,53 @@
+version: '3.7'
+
+services:
+
+  mysql:
+    platform: linux/x86_64
+    image: mysql:5.7
+    ulimits:
+      nofile: # Fix memory leak issue on some systems when LimitCORE=infinity (containerd)
+        soft: 1048576
+        hard: 1048576
+    container_name: mysql-nodejs
+    restart: unless-stopped
+    ports:
+     - $MYSQL_LOCAL_PORT:$MYSQL_DOCKER_PORT
+    environment:
+     MYSQL_ROOT_PASSWORD: $MYSQL_ROOT_PASSWORD
+     MYSQL_DATABASE: $MYSQL_DATABASE
+    volumes:
+     - db:/data/db
+    networks: 
+      - nodejss
+
+  backend:
+    depends_on:
+      - mysql
+    build: ./api
+    ports:
+     - $NODE_LOCAL_PORT:$NODE_DOCKER_PORT
+    environment:
+     - DB_HOST= $MYSQL_HOST
+     #- DB_USER=long
+     #- DB_PASSWORD=123
+     - DB_NAME= $MYSQL_DATABASE
+     - DB_PORT= $MYSQL_LOCAL_PORT
+    restart: unless-stopped
+    container_name: nodejs
+    networks: 
+      - nodejss
+
+  frontend:
+    build: ./frontend
+    ports:
+    - $REACT_LOCAL_PORT:$REACT_DOCKER_PORT
+    restart: unless-stopped
+    container_name: reactjs
+
+
+volumes:
+  db:
+
+networks:
+  nodejss:
