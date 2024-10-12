@@ -1,24 +1,60 @@
 import { Outlet, Link } from "react-router-dom";
-import React from 'react';
+import { Nav, NavDropdown, NavItem, Row, Col, Button } from "react-bootstrap";
+import { Navbar } from "react-bootstrap";
+import {Container} from "react-bootstrap";
+import { Offcanvas } from "react-bootstrap";
+import React, { useState } from 'react';
+import { signInWithPopup } from "firebase/auth";
+
+import {auth} from '../config/firebase'
+import { GoogleProvider } from "../config/firebase";
 
 const Layout = () => {
+
+  const [show, setShow] = useState();
+
+  const HandlerShow = () => setShow(true);
+  const HandlerClose = () => setShow(false);
+
+  const SignInWithGoogle = async () => {
+    try{
+      await signInWithPopup(auth, GoogleProvider);
+    }catch(e){
+      console.error(e);
+    }
+  }
+
   return (
     <>
-      <nav>
-        <ul>
-          <li>
-            <Link to="/">Home</Link>
-          </li>
-          <li>
-            <Link to="/blogs">Blogs</Link>
-          </li>
-          <li>
-            <Link to="/contact">Contact</Link>
-          </li>
-        </ul>
-      </nav>
+     <Navbar className="border rouded bg-light">
+        <Container fluid>
+              <Navbar.Brand>brand</Navbar.Brand>
+              <Navbar.Collapse>
+              <Nav>
+                <Nav.Link href='#home'>
+                  Home
+                </Nav.Link>
+                <NavDropdown title='Dropdown'>
+                  <NavItem>
+                    <Button>
+                      asd
+                    </Button>
+                  </NavItem>
+                </NavDropdown>
+              </Nav>
+              </Navbar.Collapse>
 
-      <Outlet />
+          <Row>
+          <Col>
+            <Button variant="primary" onClick={SignInWithGoogle}>
+              Account
+            </Button>
+            </Col>
+          </Row>
+        </Container>
+      </Navbar>
+
+    <Outlet/>
     </>
   )
 };
