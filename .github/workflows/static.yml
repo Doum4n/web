@@ -40,7 +40,8 @@ jobs:
       - name: Install dependencies
         run: |
           cd api # Chuyển đến thư mục dự án Node.js
-          npm install                # Cài đặt phụ thuộc cho Node.js
+          npm install              # Cài đặt phụ thuộc cho Node.js
+          cd ..
           cd frontend # Chuyển đến thư mục dự án React
           npm install                # Cài đặt phụ thuộc cho React
 
