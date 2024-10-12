@@ -41,15 +41,14 @@ jobs:
         run: |
           cd api # Chuyển đến thư mục dự án Node.js
           npm install              # Cài đặt phụ thuộc cho Node.js
-          cd ..
-          cd frontend # Chuyển đến thư mục dự án React
+          cd ../frontend # Chuyển đến thư mục dự án React
           npm install                # Cài đặt phụ thuộc cho React
 
       - name: Run Node.js and React
         run: |
-          cd web/api/router/index.js  # Chuyển đến thư mục dự án Node.js
+          cd ../api/router/index.js  # Chuyển đến thư mục dự án Node.js
           node router/index.js           # Chạy ứng dụng Node.js trong background
-          cd web/fontend # Chuyển đến thư mục dự án React
+          cd ../fontend # Chuyển đến thư mục dự án React
           npm start                # Chạy ứng dụng React
 
       - name: Setup Pages
