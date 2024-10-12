@@ -31,13 +31,35 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '16'  # Thay đổi phiên bản Node.js nếu cần
+
+      - name: Install dependencies
+        run: |
+          cd api # Chuyển đến thư mục dự án Node.js
+          npm install                # Cài đặt phụ thuộc cho Node.js
+          cd frontend # Chuyển đến thư mục dự án React
+          npm install                # Cài đặt phụ thuộc cho React
+
+      - name: Run Node.js and React
+        run: |
+          cd api/router/index.js  # Chuyển đến thư mục dự án Node.js
+          node router/index.js           # Chạy ứng dụng Node.js trong background
+          cd fontend # Chuyển đến thư mục dự án React
+          npm start                # Chạy ứng dụng React
+
       - name: Setup Pages
         uses: actions/configure-pages@v5
+      
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
           # Upload entire repository
           path: '.'
+      
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
